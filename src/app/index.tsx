@@ -1,31 +1,17 @@
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
-import { Link } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, Text, FlatList } from "react-native";
 import { usePolls } from "../hooks/usePolls";
+import PollItem from "../components/PollItem";
+import Loader from "../components/ui/loader";
+import ErrorMessage from "../components/ui/error-message";
 
 export default function Page() {
   const { polls, error, loading } = usePolls();
 
   if (loading) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
+    return <Loader />;
   }
   if (error) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text>{error}</Text>
-      </View>
-    );
+    return <ErrorMessage message={error} />;
   }
   return (
     <View className="flex-1 p-4 bg-gray-50">
@@ -38,32 +24,7 @@ export default function Page() {
       <FlatList
         data={polls}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Link href={`/polls/${item.id}`} asChild>
-            <TouchableOpacity className="bg-white rounded-lg p-4 mb-3 flex-row items-center justify-between shadow-sm">
-              <View className="flex-1 mr-2">
-                <Text className="text-lg font-medium text-gray-800 mb-1">
-                  {item.question}
-                </Text>
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons
-                    name="poll"
-                    size={18}
-                    color="#4A5568"
-                  />
-                  <Text className="text-sm text-gray-600 ml-1">
-                    {item.votes} votes
-                  </Text>
-                </View>
-              </View>
-              <MaterialCommunityIcons
-                name="chevron-right"
-                size={24}
-                color="#4A5568"
-              />
-            </TouchableOpacity>
-          </Link>
-        )}
+        renderItem={({ item }) => <PollItem poll={item} />}
       />
     </View>
   );
