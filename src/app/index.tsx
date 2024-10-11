@@ -1,21 +1,32 @@
-import React from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { Link } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-const polls = [
-  { id: 1, question: "What is your favorite color?", votes: 120 },
-  {
-    id: 2,
-    question: "What is your preferred programming language?",
-    votes: 95,
-  },
-  { id: 3, question: "What is your favorite food?", votes: 80 },
-  { id: 4, question: "What type of music do you enjoy?", votes: 150 },
-  { id: 5, question: "What is your favorite season?", votes: 60 },
-];
+import { usePolls } from "../hooks/usePolls";
 
 export default function Page() {
+  const { polls, error, loading } = usePolls();
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text>{error}</Text>
+      </View>
+    );
+  }
   return (
     <View className="flex-1 p-4 bg-gray-50">
       <Text className="text-3xl font-bold text-gray-800 mb-2">
