@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabase";
 interface Poll {
   id: number;
   question: string;
+  options: string[];
   votes: number;
 }
 export const usePolls = () => {
@@ -23,7 +24,6 @@ export const usePolls = () => {
         const { data, error } = await supabase
           .from("polls")
           .select("*")
-          .returns<Poll[]>()
           .abortSignal(signal);
 
         if (error) {
