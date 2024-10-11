@@ -12,6 +12,9 @@ export const usePolls = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
     const fetchPolls = async () => {
       console.log("Fetching...");
       setLoading(true);
@@ -20,7 +23,9 @@ export const usePolls = () => {
         const { data, error } = await supabase
           .from("polls")
           .select("*")
-          .returns<Poll[]>();
+          .returns<Poll[]>()
+          .abortSignal(signal);
+
         if (error) {
           throw new Error(error.message);
         }
@@ -34,6 +39,9 @@ export const usePolls = () => {
       }
     };
     fetchPolls();
+    return () => {
+      controller.abort();
+    };
   }, []);
   return { polls, loading, error };
 };
