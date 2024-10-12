@@ -36,6 +36,11 @@ export default function RootLayout() {
             fontWeight: "bold",
           },
           title: "Polls",
+          headerLeft: () => (
+            <Link className="mr-4" href={"/profile"}>
+              <AntDesign name="user" size={20} color="#fff" />
+            </Link>
+          ),
           headerRight: () => (
             <Link href="/polls/new" className="mr-4">
               <AntDesign name="plus" size={24} color="#fff" />
