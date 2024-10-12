@@ -8,6 +8,8 @@ import {
   TextInput,
 } from "react-native";
 import { supabase } from "@/src/lib/supabase";
+import { Stack } from "expo-router";
+const primaryColor = "#2563EB"; // Tailwind's blue-600
 
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
@@ -48,49 +50,55 @@ export default function Auth() {
   }
 
   return (
-    <View className="flex-1 justify-center items-center bg-gray-100 p-6">
-      <View className="w-full max-w-sm bg-white rounded-lg shadow-md p-6">
-        <Text className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Sign in or Create an account
-        </Text>
-        <View className="mb-4">
-          <TextInput
-            className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            placeholder="Email address"
-            autoCapitalize="none"
-            keyboardType="email-address"
-          />
+    <View className="flex-1  bg-gray-100 p-6">
+      <View className="flex-1 justify-center items-center">
+        <View className="w-full max-w-sm bg-white rounded-lg shadow-md p-6">
+          <Text className="text-2xl font-bold text-center text-gray-800 mb-6">
+            Sign in or Create an account
+          </Text>
+          <View className="mb-4">
+            <TextInput
+              className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              placeholder="Email address"
+              autoCapitalize="none"
+              keyboardType="email-address"
+            />
+          </View>
+          <View className="mb-6">
+            <TextInput
+              className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              secureTextEntry={true}
+              placeholder="Password"
+              autoCapitalize="none"
+            />
+          </View>
+          <TouchableOpacity
+            className={`w-full bg-blue-500 rounded-md p-3 ${
+              loading ? "opacity-50" : ""
+            }`}
+            disabled={loading}
+            onPress={() => signInWithEmail()}
+          >
+            <Text className="text-white text-center font-semibold">
+              Sign in
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className={`w-full bg-green-500 rounded-md p-3 mt-4 ${
+              loading ? "opacity-50" : ""
+            }`}
+            disabled={loading}
+            onPress={() => signUpWithEmail()}
+          >
+            <Text className="text-white text-center font-semibold">
+              Sign up
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View className="mb-6">
-          <TextInput
-            className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            secureTextEntry={true}
-            placeholder="Password"
-            autoCapitalize="none"
-          />
-        </View>
-        <TouchableOpacity
-          className={`w-full bg-blue-500 rounded-md p-3 ${
-            loading ? "opacity-50" : ""
-          }`}
-          disabled={loading}
-          onPress={() => signInWithEmail()}
-        >
-          <Text className="text-white text-center font-semibold">Sign in</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          className={`w-full bg-green-500 rounded-md p-3 mt-4 ${
-            loading ? "opacity-50" : ""
-          }`}
-          disabled={loading}
-          onPress={() => signUpWithEmail()}
-        >
-          <Text className="text-white text-center font-semibold">Sign up</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
